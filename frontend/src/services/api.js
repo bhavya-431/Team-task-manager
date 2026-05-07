@@ -1,4 +1,6 @@
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:4000/api';
+const envApiBase = import.meta.env.VITE_API_BASE;
+const isValidEnvBase = envApiBase && !envApiBase.includes('your-backend-service');
+const API_BASE = isValidEnvBase ? envApiBase : `${window.location.origin}/api`;
 
 const getToken = () => {
   const stored = window.localStorage.getItem('team_task_token');
