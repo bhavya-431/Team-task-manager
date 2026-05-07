@@ -15,24 +15,35 @@ const userRoutes = require('./routes/users.routes');
 const app = express();
 const prisma = new PrismaClient();
 
+// Middleware
 app.use(cors());
 app.use(bodyParser.json());
+
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/users', userRoutes);
 
+// Serve frontend static files
 const staticPath = path.join(__dirname, '../frontend/dist');
 app.use(express.static(staticPath));
 
+// React frontend fallback route
 app.get('*', (req, res) => {
+  // Prevent API routes from returning frontend
   if (req.path.startsWith('/api')) {
-    return res.status(404).json({ error: 'API route not found' });
+    return res.status(404).json({
+      error: 'API route not found',
+    });
   }
+
   res.sendFile(path.join(staticPath, 'index.html'));
 });
 
+// Start server
 const port = process.env.PORT || 4000;
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
