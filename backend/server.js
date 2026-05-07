@@ -25,20 +25,9 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/users', userRoutes);
 
-// Serve frontend static files
-const staticPath = path.join(__dirname, '../frontend/dist');
-app.use(express.static(staticPath));
-
-// React frontend fallback route
-app.get('*', (req, res) => {
-  // Prevent API routes from returning frontend
-  if (req.path.startsWith('/api')) {
-    return res.status(404).json({
-      error: 'API route not found',
-    });
-  }
-
-  res.sendFile(path.join(staticPath, 'index.html'));
+// Health check
+app.get('/', (req, res) => {
+  res.json({ message: 'Team Task Manager API is running.' });
 });
 
 // Start server
