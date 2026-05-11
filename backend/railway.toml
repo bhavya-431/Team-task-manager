@@ -1,8 +1,7 @@
 [build]
-buildCommand = "npx prisma generate"
+builder = "NIXPACKS"
 
 [deploy]
-startCommand = "npm run start"
-healthcheckPath = "/health"
+startCommand = "npm start"
 restartPolicyType = "ON_FAILURE"
-preDeployCommand = "npx prisma migrate deploy"
+restartPolicyMaxRetries = 10
