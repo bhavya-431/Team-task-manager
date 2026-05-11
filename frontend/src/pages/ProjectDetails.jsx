@@ -300,7 +300,11 @@ export default function ProjectDetails({ user, onLogout }) {
         <div className="card-list">
           {project.tasks.length ? (
             project.tasks.map((task) => (
-              <TaskCard key={task.id} task={task} />
+              <TaskCard
+  key={task.id}
+  task={task}
+  user={user}
+/>
             ))
           ) : (
             <p>No tasks added yet.</p>
