@@ -1,7 +1,8 @@
 [build]
-buildCommand = "npm install && cd ../frontend && npm install && npm run build"
+buildCommand = "npx prisma generate"
 
 [deploy]
 startCommand = "npm run start"
 healthcheckPath = "/health"
 restartPolicyType = "ON_FAILURE"
+preDeployCommand = "npx prisma migrate deploy"
