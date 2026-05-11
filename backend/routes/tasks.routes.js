@@ -20,23 +20,44 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', requireAdmin, async (req, res) => {
-  const { title, description, projectId, assigneeId, dueDate } = req.body;
+  const {
+    title,
+    description,
+    projectId,
+    assigneeId,
+    dueDate,
+    status,
+  } = req.body;
+
   if (!title || !projectId) {
-    return res.status(400).json({ error: 'Title and projectId are required' });
+    return res.status(400).json({
+      error: 'Title and projectId are required',
+    });
   }
 
-  const project = await prisma.project.findUnique({ where: { id: projectId } });
+  const project = await prisma.project.findUnique({
+    where: { id: projectId },
+  });
+
   if (!project) {
-    return res.status(404).json({ error: 'Project not found' });
+    return res.status(404).json({
+      error: 'Project not found',
+    });
   }
 
   const task = await prisma.task.create({
     data: {
       title,
       description,
+      status: status || 'PENDING',
       dueDate: dueDate ? new Date(dueDate) : null,
       projectId,
       assigneeId: assigneeId || null,
+    },
+
+    include: {
+      project: true,
+      assignee: true,
     },
   });
 
@@ -71,7 +92,14 @@ router.put('/:id/status', async (req, res) => {
 
 router.put('/:id', requireAdmin, async (req, res) => {
   const { id } = req.params;
-  const { title, description, status, dueDate, projectId, assigneeId } = req.body;
+  const {
+  title,
+  description,
+  projectId,
+  assigneeId,
+  dueDate,
+  status,
+} = req.body;
 
   const task = await prisma.task.findUnique({ where: { id } });
   if (!task) {
