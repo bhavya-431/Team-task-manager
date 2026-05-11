@@ -533,22 +533,7 @@ export default function Dashboard({ user, onLogout }) {
           </div>
         </div>
 
-        <div className="panel">
-          <h2>Tasks</h2>
-
-          <div className="card-list">
-            {tasks.length ? (
-              tasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  task={task}
-                />
-              ))
-            ) : (
-              <p>No tasks assigned.</p>
-            )}
-          </div>
-        </div>
+        
       </section>
 
       <Modal
